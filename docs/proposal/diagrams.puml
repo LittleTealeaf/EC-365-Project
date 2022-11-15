@@ -1,0 +1,37 @@
+@startuml Causal Graph
+
+(Programming Languages) #yellow
+(Salary) #yellow
+
+(Programming Languages) --> (Salary)
+
+
+(Current Job) --> (Salary)
+(Current Job) --> (Programming Languages)
+
+(Years Professional) --> (Salary)
+(Years Professional) --> (Current Job)
+
+(Years Coding) --> (Programming Languages)
+
+(Education) --> (Programming Languages)
+(Education) --> (Current Job)
+
+(Location) --> (Current Job)
+(Location) --> (Salary)
+(Location) --> (Education)
+
+(Hobby Projects) --> (Programming Languages)
+
+(Years Coding) --> (Hobby Projects)
+
+(Certifications) --> (Programming Languages)
+(Certifications) --> (Salary)
+(Certifications) --> (Current Job)
+
+(Years Professional) --> (Certifications)
+(Years Coding) --> (Certifications)
+
+
+
+@enduml
