@@ -1,0 +1,14 @@
+---
+title: "Scratch"
+output: html_notebook
+---
+
+```{r}
+temp <- tempfile()
+download.file(
+  "https://info.stackoverflowsolutions.com/rs/719-EMH-566/images/stack-overflow-developer-survey-2022.zip", # nolint
+  temp
+)
+con <- unz(temp, "survey_results_public.csv")
+data <- read.csv(con)
+```
