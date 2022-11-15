@@ -279,3 +279,4 @@ TSWLatexianTemp*
 
 **/*.pdf
 tmp
+out/

@@ -1,9 +1,18 @@
 \documentclass{article}
 \usepackage{hyperref}
+\usepackage{graphicx}
+
+\graphicspath{{../../out/docs/proposal/diagrams}}
 
 \begin{document}
   The question I would like to answer is how working with different languages affects your yearly salary. I think this is an interesting question because it might bring to light languages that not many people use, and may have a significant impact on salary.
 
   The data that I will be using is the yearly StackOverflow developer survey.
   \url{https://insights.stackoverflow.com/survey/}. Every year, StackOverflow asks their uses to fill out a developer survey, asking questions such as what languages people use, how often they search StackOverflow, etc. The developer survey for 2022 has around 72,000 results, and includes what appears to be enough variables that I can use in my analysis.
+
+  In terms of the econometric model, I will be specifically finding how working in each programming language affects salary. I've included my current causal graph below as what I have to start with, but I believe that it will change as I mutate and build upon the dataset and model.
+
+  \includegraphics[width=0.9\linewidth]{Causal Graph.png}
+
+  Some of the important aspects that I will need to control for will include source of learning (whether it was education or teaching yourself), any salary benefits from practice or professional practice. Once I dive deeper into working with the dataset, I will have a better understanding of what I can control for. Many of the 75+ variables in the dataset are multi-choice lists that I will need to separate in order to make regressable (Not to mention, the schema is difficult to understand without going between the actual data and the schema).
 \end{document}
