@@ -1,4 +1,7 @@
 \documentclass{report}
+\usepackage{hyperref}
+\usepackage{longtable}
+\usepackage[margin=1in]{geometry}
 
 \title{Econometrics Paper}
 \author{Thomas Kwashnak}
@@ -7,6 +10,56 @@
 
 \maketitle
 
-This document
+\tableofcontents
+
+\newpage
+
+\chapter{Introduction}
+In the grand scheme of history, coding has been around for very little time. In that time, however, the coding industry has changed countless times as new languages and frameworks pop up, and others die off. Now, there are countless programming langauges and frameworks that people use for various tasks. Some excel at writing low-level and efficient code used in operating systems, while others sacrifice efficiency for ease of use.
+
+Coding has turned into an industry. Multiple industries, in fact, that use programming languages to automate certain tasks, calculate results, create entertainment, and many other applications. Programming has now become one of the many in-demand jobs in the world. However, for those who may not be in the know, seeing the countless programming languages might be intimidating. It's wildly debated about which languages earn the most money.
+
+The purpose of this paper is to explore these relationships, creating a model that describes which languages correlate to an increase in salary. The goal is that by the end of this project, we will have a simple list of what languages give the largest increase in salary for knowing and working with. This outcome will allow people to look into higher paying languages that may not be in the common eye.
+
+\chapter{Data}
+
+\section{What data?}
+
+It can be argued that Stack Overflow has been a vital source of information for the programming industry. Searching up almost any coding-related question will send you to a stackoverflow post asking the same or similar question. StackOverflow has become a hub for programmers to learn from the years of questions asked.
+
+Taking advantage of the traffic that StackOverflow gets, every year they ask users to fill out a survey about their experiences with coding. The questions range from asking their education status to what frameworks they work with. Once they've compiled it together, they create a webpage that summarizes the data they find.\footnote{The results for the year 2022: \href{https://survey.stackoverflow.co/2022/}{survey.stackoverflow.co/2022/}}
+
+In addition to publishing their findings, they also offer an anonymized version of the dataset for download. In this paper, we will be using this dataset from the year 2022\footnote{You can download and explore the data: \href{https://insights.stackoverflow.com/survey/}{insights.stackoverflow.com/survey/}} as it includes many of the variables we need.
+
+\section{What's in the Data Set}
+
+The dataset that we will be using has 79 columns of data, many that can be parsed out into many more. Below are the columns of data that are most interesting to our question, including the direct variables and controls that we may need to set.
+
+\begin{longtable}{| p{0.3\textwidth} | p{0.7\textwidth} |}
+\hline
+\textbf{Employment} & Whether the individual is employed full or part time, is an independant contractor, or a full or part-time student \\ \hline
+\textbf{EdLevel} & The level of education that the individual has completed, whether it's primary school, associates, undergraduate, etc. \\ \hline
+\textbf{YearsCode}& The number of years that the individual has been programming for. \\ \hline
+\textbf{YearsCodePro} & The number of years that the individual has been professionally programming for. \\ \hline
+\textbf{DevType} & The types of developer that the individual falls under. This is a multi-selected list, so the individual may indicate multiple developer types. The developer types range from front end, back end, data engineer, and other similar roles. \\ \hline
+\textbf{Country} & The country that the individual lives in \\ \hline
+\textbf{Currency} & The currency that the individual uses \\ \hline
+\textbf{CompTotal} & The total compensation that the individual recieves \\ \hline
+\textbf{CompFreq} & The frequency that the individual recieves their compensation for working. \\ \hline
+\textbf{LanguageHaveWorkedWith} & A multi-select list of languages that the individual has worked with in the last year. \\ \hline
+\textbf{LanguageWantToWorkWith} & A multi-select list of languages that the individual wants to work with in the next year \\ \hline
+\textbf{ConvertedCompYearly} & While this variable isn't well documented, it appears to be a converted yearly compensation for each individual. There is no thorough documentation that describes the reasoning behind which entries have this populated and which do not, but there are enough values to use this effectively \\ \hline
+\end{longtable}
+
+While the dataset does contain many more variables, and you are welcome to explore it on your own, these are the variables that we will be primarily using in our analysis.
+
+\chapter{Analysis}
+\chapter{Conclusion}
+
+\appendix
+
+\chapter{Technologies Used}
+
+
 
 \end{document}
