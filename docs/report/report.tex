@@ -64,7 +64,7 @@ While the dataset does contain many more variables, and you are welcome to explo
 
 \section{Filtering Data}
 
-The dataset is pretty large. Since it was from an open poll, we aren't able to really trust each and every reported value. However, one of the values found in the dataset seem to be only listed for select entries, and not the outliers. We will be using that to filter out any excess data. Additionally, we will be filtering to only individuals within the United States
+The dataset is pretty large. Since it was from an open poll, we aren't able to really trust each and every reported value. However, one of the values found in the dataset seem to be only listed for select entries, and not the outliers. We will be using that to filter out any excess data. Additionally, we will be filtering to only individuals within the United States. To keep the data tame, I've also filtered out any entries of yearly compensation over \$1000000.
 
 \section{Data Statistics}
 
@@ -84,13 +84,19 @@ Below are some interesting statistics that we should keep in mind, since they mi
 
 \vspace{0.5in}
 
+\includegraphics[width=0.9\linewidth]{frequencyConvertedCompYearly.png}
+
+\vspace{0.5in}
+
 These statistics will come in handy during our analysis, since it'll give us a sense of what controls may be more effective with the data.
 
 \chapter{Analysis}
 
 When doing analysis, I started with the basic connection, and added controls as they seemed appropriate. Each of the following sections will discuss one of those models as we approach my final conclusive model.
 
-\section{Model 1: The Beginning}
+\section{Model Iterations}
+
+\subsection{Model 1: The Beginning}
 
 This is where we will start. The relationship we will look at is literally the salary when related to the coding languages used. Thus, our causal graph is very simple and basic.
 
@@ -122,9 +128,7 @@ As the graph indicates, very few of the coefficients are statistically significa
 
 HTML is one of the most interesting ones in this model. Firstly, it is the 3rd most frequen langauge in the dataset. However, those that work in HTML have $16.82\%$ lower salaries than those who don't. And yet, HTML is one of the most statistically significant variables in this model. One potential cause could be that companies typically push tasks including HTML to interns or lower-paid employees, as it could be seen as `tedious work'.
 
-\newpage
-
-\section{Model 2: Controlling for Developer Type}
+\subsection{Model 2: Controlling for Developer Type}
 
 Continuing with the thoughts from the previous model, I decided to control for the developer type. The developer type interacts with the system in a couple ways. First, it may indicate what languages the individual uses. For example, web developers would most likely be using HTML and Javascript. Additionally, some developer types are paid more, such as senior engineers. The implemented causal graph can be seen below:
 
@@ -170,8 +174,7 @@ There are a few noticeable changes that happened. First, we saw Go drop from bei
 
 The only notable change in the standard deviations is that the Go programming language, with is drastic shift in confidence interval, is no longer indicated as being significant under a $99\%$ confidence interval.
 
-\newpage
-\section{Model 3: Controlling for Employment and Experience}
+\subsection{Model 3: Controlling for Employment and Experience}
 
 The next controls I added was for Employment Status and Work Experience. I added these together because I thought they were related enough that they would show a bit more change when together. Even though there are a lot of Employment Status variables, I decided to only include the ``FullTime'' and ``PartTime'' variables. For experience, I used the ``NumYearsCodePro'', which is the number of years that the individual has been professionally programming for. Both of these only really affect salary, so out causal graph updates accordingly.
 
@@ -216,413 +219,31 @@ We also see some wider-recognized languages move up the list. Typescript has cha
 The changes in the coefficients also reflect in the changes in standard deviation. Our examples of Typescript and Rust both reflect in confidence intervals. In fact, Rust is now indicated to be statistically significant under a $90\%$ confidence interval.
 
 
-\appendix
+\newpage
+\section{The Finalized Model}
 
-\chapter{Model Coefficients}
+The final model that we'll use to analyze is Model 3. As a refresher, this model is controlling for deeveloper type, employment status, and years of professional coding experience. The results from this model are pretty surprising, and not at all what I expected to get.
 
-\section{Model 1}
-\label{data:model1}
-\begin{longtable}{|R{0.4\linewidth}|R{0.3\linewidth}|R{0.3\linewidth}|}
-  \hline
-  \textbf{Coefficient} & \textbf{Coef.} & \textbf{Std.Err.} \\
-  \hline
-  $Intercept$ & $11.984827291479098$ & $0.02638387358022838$\\
-  \hline
-  $APL$ & $-0.3515753166379167$ & $0.19040656218496493$\\
-  \hline
-  $Assembly$ & $-0.022774878270092502$ & $0.06417391271084091$\\
-  \hline
-  $Bash$ & $0.09741574494862054$ & $0.023518192003779363$\\
-  \hline
-  $C$ & $-0.01408012372624834$ & $0.03917209398994089$\\
-  \hline
-  $CSharp$ & $-0.00021813880139623376$ & $0.026260139810175182$\\
-  \hline
-  $Cpp$ & $0.01614481188137749$ & $0.033374008097449$\\
-  \hline
-  $COBOL$ & $-0.012468453361355524$ & $0.13124773008888396$\\
-  \hline
-  $Clojure$ & $0.08834989390983414$ & $0.06871291266628012$\\
-  \hline
-  $Crystal$ & $-0.29154156186226693$ & $0.13534770428054974$\\
-  \hline
-  $Dart$ & $-0.08507639914970087$ & $0.06313528331030023$\\
-  \hline
-  $Delphi$ & $0.10668317960652333$ & $0.08268988890859226$\\
-  \hline
-  $Elixir$ & $0.08169166663537582$ & $0.06883555200202428$\\
-  \hline
-  $Erlang$ & $0.004973113901408159$ & $0.10667729175017764$\\
-  \hline
-  $FSharp$ & $0.06454381257153534$ & $0.08713104564195269$\\
-  \hline
-  $Fortran$ & $-0.13833677404948685$ & $0.10253030714171153$\\
-  \hline
-  $Go$ & $0.13319003499559814$ & $0.03157405671867184$\\
-  \hline
-  $Groovy$ & $0.12316244166476524$ & $0.051093982778975$\\
-  \hline
-  $HTML$ & $-0.16821315816799273$ & $0.02614403669563898$\\
-  \hline
-  $Haskell$ & $-0.020751271642284602$ & $0.09192182722421918$\\
-  \hline
-  $Java$ & $0.04831187478266233$ & $0.025825872833966947$\\
-  \hline
-  $JavaScript$ & $-0.03921506374455831$ & $0.02921232329726909$\\
-  \hline
-  $Julia$ & $-0.1223982381590527$ & $0.08950973374360238$\\
-  \hline
-  $Kotlin$ & $0.003397899823075987$ & $0.04289285354049957$\\
-  \hline
-  $LISP$ & $0.06760087859014949$ & $0.09360310734237913$\\
-  \hline
-  $Lua$ & $-0.05527637658132921$ & $0.05650970228202839$\\
-  \hline
-  $MATLAB$ & $-0.08063593734616932$ & $0.06938482696041272$\\
-  \hline
-  $OCaml$ & $-0.15426935637212974$ & $0.17627744536931517$\\
-  \hline
-  $ObjectiveC$ & $0.1437929433350606$ & $0.07030565350784827$\\
-  \hline
-  $PHP$ & $-0.1425334900027705$ & $0.03176164363451973$\\
-  \hline
-  $Perl$ & $0.05576511223470758$ & $0.05879343090047313$\\
-  \hline
-  $PowerShell$ & $-0.02872604607120567$ & $0.030907473098765455$\\
-  \hline
-  $Python$ & $0.00025999621609748384$ & $0.023053062342461562$\\
-  \hline
-  $R$ & $-0.0733138428376265$ & $0.05462555231258259$\\
-  \hline
-  $Ruby$ & $0.09918441120621437$ & $0.035253988642457615$\\
-  \hline
-  $Rust$ & $0.05848788724224376$ & $0.03704178987504329$\\
-  \hline
-  $SAS$ & $-0.059867419695625486$ & $0.1391215142198275$\\
-  \hline
-  $SQL$ & $0.006837246935383501$ & $0.023426773720484767$\\
-  \hline
-  $Scala$ & $0.09900218322469777$ & $0.06011136357941274$\\
-  \hline
-  $Solidity$ & $-0.10712816585873265$ & $0.1088285423284164$\\
-  \hline
-  $Swift$ & $0.034510768684412586$ & $0.052632922987346446$\\
-  \hline
-  $TypeScript$ & $0.10804932481591713$ & $0.024178135933838007$\\
-  \hline
-  $VBA$ & $0.005707101987394854$ & $0.05461687658166946$ \\
-  \hline
-\end{longtable}
+$$\log({\text{Salary}}) = \beta_0 + \beta_1 \text{FullTime} + \beta_2 \text{PartTime} + \beta_3 \text{YearsCodePro} + \sum_i{\beta_i \text{Language}_i} + \sum_j{\beta_j \text{DevType}_j} + \varepsilon$$
 
-\section{Model 2}
-\label{data:model2}
+The final variables for this model can be found in \hyperref[data:model3]{the appendix for model 3's coefficients}.
 
-\begin{longtable}{|R{0.4\linewidth}|R{0.3\linewidth}|R{0.3\linewidth}|}
-  \hline
-  \textbf{Coefficient} & \textbf{Coef.} & \textbf{Std.Err.} \\
+\vspace{0.5in}
 
-  \hline
-  $Intercept$ & $11.942441579866246$ & $0.028446657909423873$\\
-  \hline
-  $APL$ & $-0.3402418044472495$ & $0.19012995517157452$\\
-  \hline
-  $Assembly$ & $-0.023320763962329728$ & $0.06419663909982101$\\
-  \hline
-  $Bash$ & $0.08079429577687229$ & $0.023744318938909124$\\
-  \hline
-  $C$ & $0.00976761423446626$ & $0.039822132484480424$\\
-  \hline
-  $CSharp$ & $-0.009187320233586637$ & $0.026590883866044107$\\
-  \hline
-  $Cpp$ & $0.03146066762066721$ & $0.03397882453422706$\\
-  \hline
-  $COBOL$ & $0.005052915141925268$ & $0.1303804244758583$\\
-  \hline
-  $Clojure$ & $0.06141229208950624$ & $0.06830282672385413$\\
-  \hline
-  $Crystal$ & $-0.2581833523335814$ & $0.13467915987774168$\\
-  \hline
-  $Dart$ & $-0.07912065451075$ & $0.06343234883157134$\\
-  \hline
-  $Delphi$ & $0.1384251976051225$ & $0.08369666792093462$\\
-  \hline
-  $Elixir$ & $0.04181373236990327$ & $0.06846089100086604$\\
-  \hline
-  $Erlang$ & $0.004657097904511983$ & $0.1062767853276423$\\
-  \hline
-  $FSharp$ & $0.048884791248870206$ & $0.08653983132895639$\\
-  \hline
-  $Fortran$ & $-0.08964745436698172$ & $0.10354437333520602$\\
-  \hline
-  $Go$ & $0.08140136551483662$ & $0.032074797708747764$\\
-  \hline
-  $Groovy$ & $0.10494667367554351$ & $0.051027157375957775$\\
-  \hline
-  $HTML$ & $-0.1437012996396753$ & $0.0265270141202937$\\
-  \hline
-  $Haskell$ & $0.004447592823666322$ & $0.09144854336860787$\\
-  \hline
-  $Java$ & $0.040468638301773024$ & $0.02594458031651712$\\
-  \hline
-  $JavaScript$ & $-0.03977899331419474$ & $0.029843059431824876$\\
-  \hline
-  $Julia$ & $-0.09734967954294979$ & $0.09018053837774326$\\
-  \hline
-  $Kotlin$ & $0.0051064931700549945$ & $0.04322056229750319$\\
-  \hline
-  $LISP$ & $0.0597574758373989$ & $0.09329283607040535$\\
-  \hline
-  $Lua$ & $-0.05063407052816784$ & $0.056215630481162175$\\
-  \hline
-  $MATLAB$ & $-0.037015727135502025$ & $0.06972967800790426$\\
-  \hline
-  $OCaml$ & $-0.09984686242857346$ & $0.1754412411710928$\\
-  \hline
-  $ObjectiveC$ & $0.15764383869853216$ & $0.07068682245007958$\\
-  \hline
-  $PHP$ & $-0.12444804429437875$ & $0.03193310415892388$\\
-  \hline
-  $Perl$ & $0.06608829827388867$ & $0.05858993094976128$\\
-  \hline
-  $PowerShell$ & $-0.012459877857726074$ & $0.031098789424714734$\\
-  \hline
-  $Python$ & $-0.007621446354667373$ & $0.02346661049695023$\\
-  \hline
-  $R$ & $-0.06039083585479145$ & $0.05718648770375773$\\
-  \hline
-  $Ruby$ & $0.08310326456483579$ & $0.03524116520303666$\\
-  \hline
-  $Rust$ & $0.04024780616644391$ & $0.036956235080406616$\\
-  \hline
-  $SAS$ & $-0.04933707003612837$ & $0.13918364874596165$\\
-  \hline
-  $SQL$ & $-0.012515205722800078$ & $0.023996770033395867$\\
-  \hline
-  $Scala$ & $0.06105640287372732$ & $0.060204896309929215$\\
-  \hline
-  $Solidity$ & $-0.23353028160584172$ & $0.11376612653144305$\\
-  \hline
-  $Swift$ & $0.045384216650035614$ & $0.05402864578294865$\\
-  \hline
-  $TypeScript$ & $0.0957027429290385$ & $0.02476523166595578$\\
-  \hline
-  $VBA$ & $0.04163256764540998$ & $0.05491731600084363$\\
-  \hline
-  $AcademicResearcher$ & $-0.11486515699661672$ & $0.07394371561825637$\\
-  \hline
-  $Blockchain$ & $0.32483915548922593$ & $0.09605680630169271$\\
-  \hline
-  $CloudInfrastructureEngineer$ & $0.16402035365015813$ & $0.03729523263296067$\\
-  \hline
-  $DataBusinessAnalyst$ & $-0.08054694173190041$ & $0.049778859679386715$\\
-  \hline
-  $DataScientistMachineLearning$ & $0.10758257685498596$ & $0.05244267599982858$\\
-  \hline
-  $DatabaseAdministrator$ & $-0.06365295608203128$ & $0.04443553817221691$\\
-  \hline
-  $Designer$ & $-0.06902563249277534$ & $0.048012190503913386$\\
-  \hline
-  $DevOpsSpecialist$ & $-0.00656642843705333$ & $0.0377002268222199$\\
-  \hline
-  $DevQATest$ & $-0.1162698562183955$ & $0.04731959203397757$\\
-  \hline
-  $DevBackend$ & $0.10807682472490966$ & $0.023629974392468587$\\
-  \hline
-  $DevDesktopApps$ & $-0.027797144314350635$ & $0.032008573458701464$\\
-  \hline
-  $DevEmbedded$ & $-0.025245053830091$ & $0.047718438807450775$\\
-  \hline
-  $DevFrontend$ & $-0.05144254556239885$ & $0.029301706450806635$\\
-  \hline
-  $DevFullstack$ & $0.03555097373949815$ & $0.024595500142778334$\\
-  \hline
-  $DevGame$ & $-0.06642969427581717$ & $0.07348385784251797$\\
-  \hline
-  $DevMobile$ & $-0.02444166629761129$ & $0.04324383943609378$\\
-  \hline
-  $Educator$ & $-5.971013110659751e-05$ & $0.07111336652150496$\\
-  \hline
-  $DataEngineer$ & $0.05673554468435333$ & $0.0435486574224457$\\
-  \hline
-  $SiteReliabilityEngineer$ & $0.05041834529969923$ & $0.05439789998945158$\\
-  \hline
-  $EngineerManager$ & $0.14882548337089116$ & $0.038543700023788256$\\
-  \hline
-  $MarketingSales$ & $-0.15189118556107833$ & $0.10871903639610679$\\
-  \hline
-  $ProductManager$ & $0.12761703126204174$ & $0.06202840395551482$\\
-  \hline
-  $ProjectManager$ & $-0.05235479754682851$ & $0.05399610865510271$\\
-  \hline
-  $Scientist$ & $-0.06991654954191741$ & $0.06902967176033697$\\
-  \hline
-  $Security$ & $0.03837367099024703$ & $0.056421002998026125$\\
-  \hline
-  $SeniorExec$ & $0.2489741621845383$ & $0.058088635948718534$\\
-  \hline
-  $Student$ & $-0.5662100678320023$ & $0.1286851223188849$\\
-  \hline
-  $SystemAdmin$ & $-0.14693633385578753$ & $0.04476953209653853$ \\
-  \hline
-\end{longtable}
+\includegraphics[width=0.9\linewidth]{model3coefficientlanguages.png}
 
-\section{Model 3}
+\vspace{0.5in}
 
-\label{data:model3}
+For each language listed on the graph, the value indicates the relative to the salary. For example, the coefficient on R is $-0.0419$. This means that someone who uses R has an average salary $4.19\%$ lower than someone who does not use R. This seems counterintuitive, but it makes sense in application.
 
-\begin{longtable}{|R{0.4\linewidth}|R{0.3\linewidth}|R{0.3\linewidth}|}
-  \hline
-  \textbf{Coefficient} & \textbf{Coef.} & \textbf{Std.Err.} \\
+\vspace{0.5in}
 
-  \hline
-  $Intercept$ & $11.558104139865474$ & $0.06359592918251283$\\
-  \hline
-  $APL$ & $-0.3381757301438681$ & $0.18889615389830544$\\
-  \hline
-  $Assembly$ & $-0.018080404406961695$ & $0.06382542036227189$\\
-  \hline
-  $Bash$ & $0.06762485653402327$ & $0.02360918273993907$\\
-  \hline
-  $C$ & $-0.002705393068643265$ & $0.03964603398712886$\\
-  \hline
-  $CSharp$ & $-0.027869664385359122$ & $0.026451256005736033$\\
-  \hline
-  $Cpp$ & $0.027862369904000824$ & $0.03374056532239126$\\
-  \hline
-  $COBOL$ & $-0.024086370496504195$ & $0.13044447514572283$\\
-  \hline
-  $Clojure$ & $0.03839103922264975$ & $0.06812195737248733$\\
-  \hline
-  $Crystal$ & $-0.2725604831143382$ & $0.13362044916356283$\\
-  \hline
-  $Dart$ & $-0.06657890689657456$ & $0.06315631188515229$\\
-  \hline
-  $Delphi$ & $0.026211539612785162$ & $0.08425682819795559$\\
-  \hline
-  $Elixir$ & $0.03452259826539689$ & $0.06792914007718416$\\
-  \hline
-  $Erlang$ & $0.010496967526915063$ & $0.10572307961922119$\\
-  \hline
-  $FSharp$ & $0.025827972231356078$ & $0.08586712043032842$\\
-  \hline
-  $Fortran$ & $-0.10251055054811492$ & $0.10312106777433945$\\
-  \hline
-  $Go$ & $0.08335344741813333$ & $0.03188356537216112$\\
-  \hline
-  $Groovy$ & $0.08671420351076187$ & $0.05081429966478273$\\
-  \hline
-  $HTML$ & $-0.1285231268064123$ & $0.026379098123082284$\\
-  \hline
-  $Haskell$ & $0.03121980604345148$ & $0.09076685250639172$\\
-  \hline
-  $Java$ & $0.03481671948530582$ & $0.025772568673194114$\\
-  \hline
-  $JavaScript$ & $-0.03379301376980544$ & $0.029650427449720622$\\
-  \hline
-  $Julia$ & $-0.07900185614103356$ & $0.08951340821165854$\\
-  \hline
-  $Kotlin$ & $0.017946175479714777$ & $0.04296850628292839$\\
-  \hline
-  $LISP$ & $0.04467959255183332$ & $0.0933364713909605$\\
-  \hline
-  $Lua$ & $-0.039394420725478524$ & $0.05586275905603699$\\
-  \hline
-  $MATLAB$ & $-0.023615678410647212$ & $0.06934956656671486$\\
-  \hline
-  $OCaml$ & $-0.018021372272245095$ & $0.17429497099693445$\\
-  \hline
-  $ObjectiveC$ & $0.1437433051124385$ & $0.07024162824960495$\\
-  \hline
-  $PHP$ & $-0.12317598729952375$ & $0.0317122419055241$\\
-  \hline
-  $Perl$ & $0.0014942104592398642$ & $0.058485239894259626$\\
-  \hline
-  $PowerShell$ & $-0.018286083379536112$ & $0.03087518310515494$\\
-  \hline
-  $Python$ & $0.02388766818127456$ & $0.023506754624902766$\\
-  \hline
-  $R$ & $-0.041930332438273134$ & $0.05686572719580846$\\
-  \hline
-  $Ruby$ & $0.08554235808488006$ & $0.03499545109818601$\\
-  \hline
-  $Rust$ & $0.06793198203962147$ & $0.036798855271603065$\\
-  \hline
-  $SAS$ & $-0.024226449032979436$ & $0.1381151877597313$\\
-  \hline
-  $SQL$ & $-0.02205230976767379$ & $0.0238430593795936$\\
-  \hline
-  $Scala$ & $0.06333919876821831$ & $0.05973021317712588$\\
-  \hline
-  $Solidity$ & $-0.2109830316847607$ & $0.11292610169738801$\\
-  \hline
-  $Swift$ & $0.046704396907938116$ & $0.053732105497312596$\\
-  \hline
-  $TypeScript$ & $0.11354175638330341$ & $0.02466883542395014$\\
-  \hline
-  $VBA$ & $0.05369055463859662$ & $0.054495104974618486$\\
-  \hline
-  $AcademicResearcher$ & $-0.11990926398964094$ & $0.07340287114182538$\\
-  \hline
-  $Blockchain$ & $0.36587147983381996$ & $0.09584624833584483$\\
-  \hline
-  $CloudInfrastructureEngineer$ & $0.1551675140772603$ & $0.037055055953812345$\\
-  \hline
-  $DataBusinessAnalyst$ & $-0.08382488885059589$ & $0.04939034189760284$\\
-  \hline
-  $DataScientistMachineLearning$ & $0.11478306855657977$ & $0.05204245718880451$\\
-  \hline
-  $DatabaseAdministrator$ & $-0.07590471640313001$ & $0.04415131617332174$\\
-  \hline
-  $Designer$ & $-0.09333655645783756$ & $0.047807165060700436$\\
-  \hline
-  $DevOpsSpecialist$ & $-0.006913928478647108$ & $0.03742232164868548$\\
-  \hline
-  $DevQATest$ & $-0.10058838211349162$ & $0.046971840504090916$\\
-  \hline
-  $DevBackend$ & $0.09666739386945492$ & $0.023491993776314342$\\
-  \hline
-  $DevDesktopApps$ & $-0.04896238022666191$ & $0.03182800208819489$\\
-  \hline
-  $DevEmbedded$ & $-0.032252143816509427$ & $0.04735945837954396$\\
-  \hline
-  $DevFrontend$ & $-0.042619745009485746$ & $0.02910485223132635$\\
-  \hline
-  $DevFullstack$ & $0.03211602308445223$ & $0.02443270441037309$\\
-  \hline
-  $DevGame$ & $-0.049287997919309046$ & $0.07299705204662943$\\
-  \hline
-  $DevMobile$ & $-0.023392587166673653$ & $0.04298238322442538$\\
-  \hline
-  $Educator$ & $-0.02298187431536658$ & $0.07073536268461593$\\
-  \hline
-  $DataEngineer$ & $0.05334763293960443$ & $0.04324705180656263$\\
-  \hline
-  $SiteReliabilityEngineer$ & $0.05344301188449774$ & $0.054025273036085904$\\
-  \hline
-  $EngineerManager$ & $0.09807319876361752$ & $0.03853325539145094$\\
-  \hline
-  $MarketingSales$ & $-0.12511544240146555$ & $0.10790845903735226$\\
-  \hline
-  $ProductManager$ & $0.12632610842409417$ & $0.06185556457051954$\\
-  \hline
-  $ProjectManager$ & $-0.04235302677410141$ & $0.05361183277002806$\\
-  \hline
-  $Scientist$ & $-0.06958286214907206$ & $0.06854290145168922$\\
-  \hline
-  $Security$ & $0.025830201314306356$ & $0.05604643909777822$\\
-  \hline
-  $SeniorExec$ & $0.19899403814038752$ & $0.05822910069597439$\\
-  \hline
-  $Student$ & $-0.4129382583426311$ & $0.12841025984636714$\\
-  \hline
-  $SystemAdmin$ & $-0.15547517672341207$ & $0.044489371812955404$\\
-  \hline
-  $FullTime$ & $0.24852431363579697$ & $0.05522332479437502$\\
-  \hline
-  $PartTime$ & $-0.38081352591020495$ & $0.11049755478678222$\\
-  \hline
-  $NumYearsCodePro$ & $0.012981805679194186$ & $0.0011762073012294661$ \\
-  \hline
-  \end{longtable}
+\includegraphics[width=0.9\linewidth]{model3coefficientdevtypes.png}
+
+\vspace{0.5in}
+
+
+
+
 
 \end{document}
