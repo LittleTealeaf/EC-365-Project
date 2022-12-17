@@ -1,0 +1,47 @@
+@startuml model1
+left to right direction
+skinparam dpi 200
+
+(Salary) #LightBlue
+
+(Programming Languages) #LightBlue
+
+
+(Programming Languages) --> (Salary)
+
+@enduml
+
+@startuml model2
+left to right direction
+skinparam dpi 200
+
+(Salary) #LightBlue
+
+(Programming Languages) #LightBlue
+
+(Developer Type)
+
+
+(Programming Languages) --> (Salary)
+(Developer Type) --> (Programming Languages)
+(Developer Type) --> (Salary)
+
+@enduml
+@startuml model3
+left to right direction
+skinparam dpi 200
+
+(Salary) #LightBlue
+
+(Programming Languages) #LightBlue
+
+(Developer Type)
+
+
+(Programming Languages) --> (Salary)
+(Developer Type) --> (Programming Languages)
+(Developer Type) --> (Salary)
+(Years Coding Pro) --> (Salary)
+(Employment Status) --> (Salary)
+
+@enduml
