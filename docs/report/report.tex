@@ -11,7 +11,7 @@
 \newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}}
 \newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
 
-\title{How Languages affect Salary}
+\title{Coding Languages and Salary}
 \author{Thomas Kwashnak}
 
 \begin{document}
@@ -27,7 +27,7 @@ In the grand scheme of history, coding has been around for very little time. In 
 
 Coding has turned into an industry. Multiple industries, in fact, that use programming languages to automate certain tasks, calculate results, create entertainment, and many other applications. Programming has now become one of the many in-demand jobs in the world. However, for those who may not be in the know, seeing the countless programming languages might be intimidating. It's wildly debated about which languages earn the most money.
 
-The purpose of this paper is to explore these relationships, creating a model that describes which languages correlate to an increase in salary. The goal is that by the end of this project, we will have a simple list of what languages give the largest increase in salary for knowing and working with. This outcome will allow people to look into higher paying languages that may not be in the common eye.
+The purpose of this paper is to explore these relationships, creating a model that describes which languages correlate to an increase in salary. The goal is that by the end of this project, we will have better guidance as to what languages are most worth it to learn. In other words, we are trying to figure out how to approach choosing languages to learn.
 
 \chapter{Data}
 
@@ -64,7 +64,9 @@ While the dataset does contain many more variables, and you are welcome to explo
 
 \section{Filtering Data}
 
-The dataset is pretty large. Since it was from an open poll, we aren't able to really trust each and every reported value. However, one of the values found in the dataset seem to be only listed for select entries, and not the outliers. We will be using that to filter out any excess data. Additionally, we will be filtering to only individuals within the United States. To keep the data tame, I've also filtered out any entries of yearly compensation over \$1000000.
+The dataset is pretty large. Since it was from an open poll, we aren't able to really trust each and every reported value. However, one of the values found in the dataset seem to be only listed for select entries, and not the outliers. We will be using that to filter out any excess data. Additionally, we will be filtering to only individuals within the United States. To keep the data tame, I've also filtered out any entries of yearly compensation over $\$1,000,000$.
+
+I've also had to remove some of the possible values from variables. Most notably, in order to avoid multi-collinearity I removed the values in the Education variable that pertained towards current education. That is, the Education variables now only consist of higher-education and not partial or lower education.
 
 \section{Data Statistics}
 
@@ -76,7 +78,17 @@ Below are some interesting statistics that we should keep in mind, since they mi
 
 \vspace{0.5in}
 
+The frequency of each language gives us a gauge of what the standard deviations we expect each language to have. Specifically, languages that have fewer entries, such as APL, may not be able to be accurately represented in our models, due to the lack of data.
+
+\vspace{0.5in}
+
 \includegraphics[width=0.9\linewidth]{frequencyDevtype.png}
+
+\vspace{0.5in}
+
+The frequency of the developer types gives us an idea of what our dataset is comprised of. From the graph above, we can see that our data seems to be mostly Front, Back, and Full-stack developers. This makes sense because StackOverflow gets the most traffic from these sources. This means that our results will be more geared towards those types of developments.
+
+Many of the other developer types are also partially included in the full-stack scope, but were listed separately.
 
 \vspace{0.5in}
 
@@ -84,166 +96,248 @@ Below are some interesting statistics that we should keep in mind, since they mi
 
 \vspace{0.5in}
 
+As it appears in the visualization, it appears that our dataset is comprised of mostly full-time, part-time, and self-employed developers. Because of this, we can ignore the other categories.
+
+\vspace{0.5in}
+
 \includegraphics[width=0.9\linewidth]{frequencyConvertedCompYearly.png}
 
 \vspace{0.5in}
 
-These statistics will come in handy during our analysis, since it'll give us a sense of what controls may be more effective with the data.
+As seen here, the distribution seems to mainly hover around $\$100,000$ to $\$200,000$ with some outliers both higher and lower. One of the mistakes I made while building the model was forgetting to restrict the compensation down to at most $\$1,000,000$. Now that the range seems reasonable, the data should mostly be accurate and usable.
 
-\chapter{Analysis}
 
-When doing analysis, I started with the basic connection, and added controls as they seemed appropriate. Each of the following sections will discuss one of those models as we approach my final conclusive model.
+\chapter{Data Analysis}
 
-\section{Model Iterations}
+\section{The Model}
 
-\subsection{Model 1: The Beginning}
+The model used to draw conclusions is tasked to find relationships between coding languages and salary. I controlled for various variables, including the developer type, years professionally programming, and employment status.
 
-This is where we will start. The relationship we will look at is literally the salary when related to the coding languages used. Thus, our causal graph is very simple and basic.
+\subsection{Causality Analysis}
 
-\includegraphics[width=0.9\linewidth]{model1.png}
+\includegraphics[width=0.95\linewidth]{model.png}
 
-Similarly, the equation is relatively simple. Note that the summation is used to avoid needing to type out each of the language variables.
+The graph above indicates the causality graph used for building the model. As indicated, the blue nodes represent the relationship I want to focus on. In my instance, that is the programming languages and salary. The other nodes are other aspects that relate programming languages and salary together. Nodes in green indicate aspects that I will be controlling in my model.
 
-$$\log({\text{Salary}}) = \beta_0 + \sum_i{\beta_i \text{Language}_i} + \varepsilon$$
+\subsection{Model Equation}
 
-Because there is a significant number of coefficients, they have been omitted from the analysis section to prevent information being spaced out. However, you can find all of the coefficients for each model in the \hyperref[data:model1]{appendix section for Model Coefficients}.
+The model I have decided to use is as follows.
 
-\vspace{0.5in}
+$$\log(\text{Salary}) = \beta_0 + \beta_1 \text{Years Work} + \beta_2 \sum_h{\beta_h \text{Education}} + \sum_i{\beta_i \text{Programming Languages}} + \sum_j{\beta_j \text{Dev Type}}$$
 
-\includegraphics[width=0.9\linewidth]{model1coefficientlangauges.png}
+The first point to notice about the model equation is that I've used summations. The reason I've used summations is because there are far too many variables in each `category' to include it in the summary. Most of these variables are binary values.The only non-binary value is the number of years that an individual has worked.
 
-\vspace{0.5in}
+Because we are using log base 10, the interpretation of the coefficients are different. For binary coefficients such as those found in the Education, Developer Type, and Programming Language sections, the coefficient means that individuals with that property have a $\beta \cdot 100\%$ change in pay. For example, if the coefficient of having a Masters degree is $0.15$, then having a masters degree increases your salary by $15\%$.
 
-This graph shows us the relationship between working with each language and yearly salary. For example, the effect of working with HTML is $-0.1682$ or $-16.82\%$. That means that compared to the total average, if you have worked with HTML in the past year, your yearly salary would be $16.82\%$ lower. Obviously, I think there is some heteroskedasticity in this model, since we are not controlling for anything at all.
+However, for the Years Working coefficient, the interpretation is different. The coefficient on Years Working indicates that for every year you work, your salary goes up $\beta \cdot 100\%$. For example, if the coefficient on Years Working is $0.04$, and you have worked 5 years, the effect of your work experience is that your salary is $20\%$ higher than someone who has no work experience.
 
-Another important measure that we should take, even if it's just to compare with future models, is the statistical significance of each coefficient. Shown below is a graph of the coefficients divided by their standard deviations. Included in the graph are lines indicating the $90\%$, $95\%$, and $99\%$ confidence interval thresholds.
 
-\vspace{0.5in}
+\subsection{Coefficient Values}
 
-\includegraphics[width=0.9\linewidth]{model1confidencelanguages.png}
-
-\vspace{0.5in}
-
-As the graph indicates, very few of the coefficients are statistically significant within any of the confidence intervals. This means that only certain langauges have a significant impact on salary.
-
-HTML is one of the most interesting ones in this model. Firstly, it is the 3rd most frequen langauge in the dataset. However, those that work in HTML have $16.82\%$ lower salaries than those who don't. And yet, HTML is one of the most statistically significant variables in this model. One potential cause could be that companies typically push tasks including HTML to interns or lower-paid employees, as it could be seen as `tedious work'.
-
-\subsection{Model 2: Controlling for Developer Type}
-
-Continuing with the thoughts from the previous model, I decided to control for the developer type. The developer type interacts with the system in a couple ways. First, it may indicate what languages the individual uses. For example, web developers would most likely be using HTML and Javascript. Additionally, some developer types are paid more, such as senior engineers. The implemented causal graph can be seen below:
-
-\includegraphics[width=0.9\linewidth]{model2.png}
-
-Similarly, our model equation will now include the Developer Types, which is once again a set of variables that will be represented in a loop
-
-$$\log({\text{Salary}}) = \beta_0 + \sum_i{\beta_i \text{Language}_i} + \sum_j{\beta_j \text{DevType}_j} + \varepsilon$$
-
-Once again, you can view the individual coefficients in the \hyperref[data:model2]{appendix section}. First, I looked to make sure that the deata I found for the developer types made sense.
-
-\vspace{0.5in}
-
-\includegraphics[width=0.9\linewidth]{model2coefficientdevtype.png}
-
-\vspace{0.5in}
-
-As expected, students have the largest decrease in salary. In this model, being a student means you have a $56.62\%$ lower salary than others. While in practice, I think this is much lower, it still indicates that we are going in the right direction. Additionally, Senior Executives also appear very high up. Being a Senior Executive increases your salary by $24.89\%$, according to this model.
-
-\vspace{0.5in}
-
-\includegraphics[width=0.9\linewidth]{model2confidencedevtype.png}
-
-\vspace{0.5in}
-
-If we take a look back at the dataset statistics, we see that Front End, Back End, and Full Stack take up a large majority of the dataset. However, the effect of Back End development is the only one of the three that is statistically significant under a $99\%$ confidence interval, whereas Front End is significant under a $90\%$ confidence interval.
-
-\vspace{0.5in}
-
-\includegraphics[width=0.9\linewidth]{model2coefficientlanguages.png}
-
-\vspace{0.5in}
-
-There are a few noticeable changes that happened. First, we saw Go drop from being 2nd place to 6th place, as its coefficient dropped from $13.31\%$ to $8.14\%$. The C programming language saw an increase, as it went from $-1.41\%$ to $0.92\%$. While small, that change bumped it up a good number of spots.
-
-% The changes to the coefficients for languages hasn't changed much at all. Some have moved around, but there isn't many drastic changes. However, these minor changes seem to be going towards the right direction. For example, the coefficient on HTML increased from $-16.82\%$ to $-14.37\%$. Although it is still oddly low, it's a bit better than before.
-
-\vspace{0.5in}
-
-\includegraphics[width=0.9\linewidth]{model2confidencelanguages.png}
-
-\vspace{0.5in}
-
-The only notable change in the standard deviations is that the Go programming language, with is drastic shift in confidence interval, is no longer indicated as being significant under a $99\%$ confidence interval.
-
-\subsection{Model 3: Controlling for Employment and Experience}
-
-The next controls I added was for Employment Status and Work Experience. I added these together because I thought they were related enough that they would show a bit more change when together. Even though there are a lot of Employment Status variables, I decided to only include the ``FullTime'' and ``PartTime'' variables. For experience, I used the ``NumYearsCodePro'', which is the number of years that the individual has been professionally programming for. Both of these only really affect salary, so out causal graph updates accordingly.
-
-\includegraphics[width=0.9\linewidth]{model3.png}
-
-Similarly, our model equation now includes these constants. However, one of the important aspects to remember is that the years professionally coding is not a binary value, but a numerical value. That is, the interpretation of the number of years professionally coding is that for every additional year, the individual's salary will increase by that percent.
-
-$$\log({\text{Salary}}) = \beta_0 + \beta_1 \text{FullTime} + \beta_2 \text{PartTime} + \beta_3 \text{YearsCodePro} + \sum_i{\beta_i \text{Language}_i} + \sum_j{\beta_j \text{DevType}_j} + \varepsilon$$
+The complete model's coefficient values are listed in a table below. Don't try to interpret this, there are graphs after the table that visualize the important features of the model.
 
 \begin{longtable}{|R{0.4\linewidth}|R{0.3\linewidth}|R{0.3\linewidth}|}
   \hline
-  \textbf{Coefficient} & \textbf{Value} & \textbf{Std.Err.} \\
+  \textbf{Coefficient} & \textbf{Coef.} & \textbf{Std.Err.} \\
+
   \hline
-  $FullTime$ & $0.24852431363579697$ & $0.05522332479437502$\\
+  $Intercept$ & $5.018561975617827$ & $0.014839004672467472$\\
   \hline
-  $PartTime$ & $-0.38081352591020495$ & $0.11049755478678222$\\
+  $APL$ & $-0.08449616172936489$ & $0.07031461604245251$\\
   \hline
-  $NumYearsCodePro$ & $0.012981805679194186$ & $0.0011762073012294661$ \\
+  $Assembly$ & $0.016543407577874203$ & $0.023222811832528233$\\
+  \hline
+  $Bash$ & $0.022502299799285364$ & $0.008126254562779637$\\
+  \hline
+  $C$ & $-0.004627316713939622$ & $0.014173655368536292$\\
+  \hline
+  $CSharp$ & $-0.012588890609753975$ & $0.009085160939920714$\\
+  \hline
+  $Cpp$ & $0.0013302181178897199$ & $0.011912263426960995$\\
+  \hline
+  $COBOL$ & $-0.05980366511464108$ & $0.045879491473421935$\\
+  \hline
+  $Clojure$ & $0.05637302678016759$ & $0.024627811466780104$\\
+  \hline
+  $Crystal$ & $-0.07234531945106182$ & $0.04327405939866166$\\
+  \hline
+  $Dart$ & $-0.00917484299525742$ & $0.02189492641781949$\\
+  \hline
+  $Delphi$ & $-0.0693890922496736$ & $0.03586179425005313$\\
+  \hline
+  $Elixir$ & $0.02210851459062957$ & $0.024672292276064385$\\
+  \hline
+  $Erlang$ & $0.024650132224725452$ & $0.03868532133487006$\\
+  \hline
+  $FSharp$ & $0.003168089676544944$ & $0.029181773275287513$\\
+  \hline
+  $Fortran$ & $-0.048333855664798586$ & $0.04105847118866435$\\
+  \hline
+  $Go$ & $0.05335781525928454$ & $0.010977386023936398$\\
+  \hline
+  $Groovy$ & $0.001605072885167258$ & $0.01751638180083541$\\
+  \hline
+  $HTML$ & $-0.028033485222218463$ & $0.009103744949128282$\\
+  \hline
+  $Haskell$ & $0.008404301828283167$ & $0.03192838464217453$\\
+  \hline
+  $Java$ & $0.01937787833703439$ & $0.008896786629214502$\\
+  \hline
+  $JavaScript$ & $-0.0027372986809501565$ & $0.010224848456465157$\\
+  \hline
+  $Julia$ & $-0.015498841494914456$ & $0.03534525669461834$\\
+  \hline
+  $Kotlin$ & $0.01054821064480578$ & $0.014670749859060759$\\
+  \hline
+  $LISP$ & $-0.017472537118401965$ & $0.03295181888669319$\\
+  \hline
+  $Lua$ & $-0.030831776743935557$ & $0.020575394583910264$\\
+  \hline
+  $MATLAB$ & $-0.021213647704870414$ & $0.025002721413724522$\\
+  \hline
+  $OCaml$ & $0.05015895016782079$ & $0.06719487153425305$\\
+  \hline
+  $ObjectiveC$ & $0.07222513095095705$ & $0.02481404571568205$\\
+  \hline
+  $PHP$ & $-0.0544365718219032$ & $0.011143311982348787$\\
+  \hline
+  $Perl$ & $-0.006106768354959213$ & $0.020625334173556737$\\
+  \hline
+  $PowerShell$ & $-0.014147923875509484$ & $0.010386913376311395$\\
+  \hline
+  $Python$ & $0.002687297090511978$ & $0.008151030909738132$\\
+  \hline
+  $R$ & $-0.030262557602700052$ & $0.020931196440234025$\\
+  \hline
+  $Ruby$ & $0.028956172482974392$ & $0.011908465402361249$\\
+  \hline
+  $Rust$ & $0.018212887227691488$ & $0.012870849262221455$\\
+  \hline
+  $SAS$ & $-0.013234736089247523$ & $0.052013262317076876$\\
+  \hline
+  $SQL$ & $-0.00849666228036599$ & $0.008284963162838334$\\
+  \hline
+  $Scala$ & $0.025163815292020053$ & $0.021331433168606025$\\
+  \hline
+  $Solidity$ & $-0.0427805336085689$ & $0.0389795415592104$\\
+  \hline
+  $Swift$ & $0.004164081839166639$ & $0.01896091451038442$\\
+  \hline
+  $TypeScript$ & $0.04359114908560244$ & $0.008403383876866784$\\
+  \hline
+  $VBA$ & $-0.011001469110574008$ & $0.019243503113297276$\\
+  \hline
+  $AcademicResearcher$ & $-0.12871697651357228$ & $0.02730337888145829$\\
+  \hline
+  $Blockchain$ & $0.06578162262406473$ & $0.03372859156753758$\\
+  \hline
+  $CloudInfrastructureEngineer$ & $0.05196419915888793$ & $0.012553737347643696$\\
+  \hline
+  $DataBusinessAnalyst$ & $-0.039286887324647385$ & $0.01728960385438497$\\
+  \hline
+  $DataScientistMachineLearning$ & $0.023357961295502674$ & $0.018307419762844942$\\
+  \hline
+  $DatabaseAdministrator$ & $-0.027028506649393783$ & $0.014987678291949746$\\
+  \hline
+  $Designer$ & $-0.04223410477458675$ & $0.01651835731226557$\\
+  \hline
+  $DevOpsSpecialist$ & $-0.001873958169947676$ & $0.012705858826887234$\\
+  \hline
+  $DevQATest$ & $-0.03476863560289306$ & $0.0159755981159479$\\
+  \hline
+  $DevBackend$ & $0.04031953686858543$ & $0.008087778525870913$\\
+  \hline
+  $DevDesktopApps$ & $-0.004829218147118508$ & $0.01085656243606461$\\
+  \hline
+  $DevEmbedded$ & $-0.010143810224208738$ & $0.016861477544157503$\\
+  \hline
+  $DevFrontend$ & $-0.0168633431055481$ & $0.009973702591350013$\\
+  \hline
+  $DevFullstack$ & $-0.0034240279451892147$ & $0.008468785646300603$\\
+  \hline
+  $DevGame$ & $-0.021734376551434786$ & $0.025061044914121103$\\
+  \hline
+  $DevMobile$ & $0.0040507442759937715$ & $0.014740447453515668$\\
+  \hline
+  $Educator$ & $-0.059312619088188856$ & $0.026376953428444504$\\
+  \hline
+  $DataEngineer$ & $0.03490855530981987$ & $0.014714236436138586$\\
+  \hline
+  $SiteReliabilityEngineer$ & $0.04767241459003019$ & $0.017807501780216103$\\
+  \hline
+  $EngineerManager$ & $0.06223673153071544$ & $0.012756460781307929$\\
+  \hline
+  $MarketingSales$ & $-0.03356290987567101$ & $0.04164521180502019$\\
+  \hline
+  $ProductManager$ & $0.04436042786336988$ & $0.021278861228822374$\\
+  \hline
+  $ProjectManager$ & $-0.025467515919178063$ & $0.018275603212142864$\\
+  \hline
+  $Scientist$ & $-0.029241818484850468$ & $0.026753834531422153$\\
+  \hline
+  $Security$ & $0.0054076517835031646$ & $0.01889144747180604$\\
+  \hline
+  $SeniorExec$ & $0.07737027618438086$ & $0.02021619055971414$\\
+  \hline
+  $Student$ & $-0.12365568225571719$ & $0.04483903654046471$\\
+  \hline
+  $SystemAdmin$ & $-0.06452130456738468$ & $0.01494683899507614$\\
+  \hline
+  $AssociatesDegree$ & $-0.05102391960598193$ & $0.019700448959642704$\\
+  \hline
+  $BachelorsDegree$ & $0.025741588647834768$ & $0.01081393797362146$\\
+  \hline
+  $MastersDegree$ & $0.06254927197146623$ & $0.012988286347159678$\\
+  \hline
+  $DoctoralDegree$ & $0.12807670365517893$ & $0.0248851638560115$\\
+  \hline
+  $ProfessionalDegree$ & $0.0892062562999687$ & $0.04616626957254842$\\
+  \hline
+  $WorkExp$ & $0.00479688874852874$ & $0.0003893979526814846$ \\
   \hline
 \end{longtable}
 
-The table\footnote{I've displayed the additional constants as a table because NumYearsCodePro is not a binary value.} above shows the new variables introduced in this model\footnote{The rest of the model values can be found in its \hyperref[data:model3]{section in the appendix}}. If you divide the value by the standard error, you will find that each one is statistically signficant\footnote{Alternatively, eyeballing the values work. Notice that each value is at least triple its standard error}.
-
-Since the NumYearsCodePro variable is not binary, its interpretation is different. This model says that for every additional year of professional coding experience you have, your salary is expected to increase by about $1.30\%$. While it may not seem much, it adds up. For example, people who have been professionally programming for about 10 years on average have around a $13\%$ higher salary.
-
-\vspace{0.5in}
-
-\includegraphics[width=0.9\linewidth]{model3coefficientlanguages.png}
-
-\vspace{0.5in}
-
-Compared to previous models, this model seems to be a lot more decisive. There are less values whose coefficients are almost zero. For example, in model 2, working with Kotlin had a measly $0.5\%$ increase in salary. However, in model 3 Kotlin increases salary by $1.79\%$, over triple the effect.
-
-We also see some wider-recognized languages move up the list. Typescript has changed from a $9.57\%$ increase in Model 2 to a $11.35\%$ increase. Rust also jumped from close to the middle with a $4.02\%$ up to the top 5 with $6.8\%$.
-
-\vspace{0.5in}
-
-\includegraphics[width=0.9\linewidth]{model3confidencelanguages.png}
-
-\vspace{0.5in}
-
-The changes in the coefficients also reflect in the changes in standard deviation. Our examples of Typescript and Rust both reflect in confidence intervals. In fact, Rust is now indicated to be statistically significant under a $90\%$ confidence interval.
-
-
 \newpage
-\section{The Finalized Model}
-
-The final model that we'll use to analyze is Model 3. As a refresher, this model is controlling for deeveloper type, employment status, and years of professional coding experience. The results from this model are pretty surprising, and not at all what I expected to get.
-
-$$\log({\text{Salary}}) = \beta_0 + \beta_1 \text{FullTime} + \beta_2 \text{PartTime} + \beta_3 \text{YearsCodePro} + \sum_i{\beta_i \text{Language}_i} + \sum_j{\beta_j \text{DevType}_j} + \varepsilon$$
-
-The final variables for this model can be found in \hyperref[data:model3]{the appendix for model 3's coefficients}.
+\section{Model Analysis}
+The table above does a great job of telling you the details, however it doesn't give us anything that we can easily interpret. That's where graphs can come in to help!
 
 \vspace{0.5in}
 
-\includegraphics[width=0.9\linewidth]{model3coefficientlanguages.png}
+\includegraphics[width=0.95\linewidth]{coefficients_language.png}
 
 \vspace{0.5in}
 
-For each language listed on the graph, the value indicates the relative to the salary. For example, the coefficient on R is $-0.0419$. This means that someone who uses R has an average salary $4.19\%$ lower than someone who does not use R. This seems counterintuitive, but it makes sense in application.
+This graph shows us the distribution of the coefficients on langauges. In short, it gives us an ordered visual on different languages and their effects on salary. Languages on the right side of the graph increase the salary of those who work with them, and languages on the left decrease the salary. The `average', or the base salary of any individual, is not the average salary of a developer.
+
+An interesting feature I noticed is that languages that are used most often, or languages I knew to be used a lot, find themselves in the center. Perhaps this is because those languages somewhat become the 'baseline' that the regression bases off of. That makes sense as the languages at both extremes are languages more specific towards a particular field.
+
+While building the model, I ran into many issues with multi-collinearity. The most substantial were values in Education that fit elsewhere. In the raw dataset, it was possible to put in `SomeCollege' or `PrimarySchool'. However, that often applied to students who also put `Student' in the Developer Type. In order to avoid this, I simply removed the `SomeCollege', `PrimarySchool', and `SecondarySchool' values from the model.
+
+Another graph that gives us insights is looking at the standard deviation of each variable. Basically, take the graph above, make everything positive, and then divide each variable by its standard devation. Thats how we get this:
+
+
+\includegraphics[width=0.95\linewidth]{standarddeviations_language.png}
 
 \vspace{0.5in}
 
-\includegraphics[width=0.9\linewidth]{model3coefficientdevtypes.png}
+The colored lines on the graph indicate the threshold points for the corresponding confidence intervals. If a coefficient is higher than that threshold, it is found to be statistically significant in the model. While this doesn't give us information about all of the languages, it does give us some insight as to what languages make the difference. If I was to base my conclusions off of the model alone, this would tell me that only a few languages have significant impact on salary, being Typescript, PHP, Go, HTML, ObjectiveC,
+and Bash.
 
-\vspace{0.5in}
+Looking at the overall results, there are some langauges I didn't expect to see in their spots. For example, HTML has a very interesting position. In all of my prior work until I got to this model, HTML has always had a negative coefficient. I believe this is because most work in HTML is done by programmers who are entry-level or junior developers. Once someone gets to senior level, most of their work is more advanced, and typically doesn't include HTML work.
 
+Overall, my hypothesis that there are some languages that result in a higher salary than others is generally supported. It does appear that there is indeed a relationship. The relationship itself may not be accurate, as I may need to get more data in order to fully investigate, but the idea is still there.
 
+\chapter{Conclusion}
 
+I think the most factual thing that I can conclude from this analysis is that there is indeed a relationship between languages used and salary. However, the model I built may not have enough data to properly identify the true relationship.
+
+However, some patterns in the model may point us in the right direction. For example, most of the multi-purpose languages fall around the average. That is, picking up another multi-use language isn't going to change someone's salary much. However, as you go towards both extremes, you reach some of the more peculiar and specific languages. For example, Objective-C. Because these languages have a very specific application, they tend to be paid either significantly more or significantly less than average.
+
+Many times people suggest picking up Python, Javascript, HTML, and other languages that are more multi-purpose. Firstly, it's easier to learn something that's not very specific to a certain application. However, as this model has shown, you can't expect to grow your salary if you don't start focusing your efforts to get into a field working with specific languages. Knowing the basic languages can land you a job, but having a very specific specialization keeps you that job.
+
+The world is always changing, so this data will be obsolete very soon. The lessons, however, may persist. There are likely more lessons that this question can teach. If I was to continue looking into this question, I would most likely seek out more data. Perhaps I could extend the range of data to other countries as well, and possibly include prior years. If I had more time, I might've also looked at the possiblity of adding intersection variables to the model, as working with some languages in certain applications can prove to be worth more.
+
+However, that is where this answer stands. It teaches the first lesson about growing your salary, but it leaves many questions that are up to you to answer.
 
 
 \end{document}

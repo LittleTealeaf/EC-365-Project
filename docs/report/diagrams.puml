@@ -1,47 +1,67 @@
-@startuml model1
+@startuml model
 left to right direction
-skinparam dpi 200
+skinparam dpi 300
 
 (Salary) #LightBlue
 
 (Programming Languages) #LightBlue
 
 
-(Programming Languages) --> (Salary)
+(Developer Type) #LightGreen
 
-@enduml
+(Education) #LightGreen
 
-@startuml model2
-left to right direction
-skinparam dpi 200
+(Employment)
 
-(Salary) #LightBlue
+(Years Working) #LightGreen
 
-(Programming Languages) #LightBlue
+(Years Coding)
 
-(Developer Type)
-
+(Years Professionally Coding)
 
 (Programming Languages) --> (Salary)
+
+
+(Education) --> (Salary)
+(Education) --> (Years Coding)
+(Education) --> (Programming Languages)
+
+
 (Developer Type) --> (Programming Languages)
 (Developer Type) --> (Salary)
 
-@enduml
-@startuml model3
-left to right direction
-skinparam dpi 200
 
-(Salary) #LightBlue
-
-(Programming Languages) #LightBlue
-
-(Developer Type)
+(Employment) --> (Salary)
 
 
-(Programming Languages) --> (Salary)
-(Developer Type) --> (Programming Languages)
-(Developer Type) --> (Salary)
-(Years Coding Pro) --> (Salary)
-(Employment Status) --> (Salary)
+(Years Working) --> (Salary)
+
+(Years Coding) --> (Programming Languages)
+
+(Employment) --> (Developer Type)
+
+(Years Working) --> (Years Professionally Coding)
+
+(Years Professionally Coding) --> (Years Coding)
+
+
+' (Programming Languages) --> (Salary)
+
+' (Developer Type) --> (Programming Languages)
+
+' (Developer Type) --> (Salary)
+
+' (Education Level) --> (Developer Type)
+' (Education Level) --> (Programming Experience)
+
+' (Work Experience) --> (Salary)
+
+' (Work Experience) --> (Professional Programming Experience)
+' (Professional Programming Experience) -> (Programming Experience)
+
+' (Programming Experience) --> (Programming Languages)
+
+
+' (Employment Status) --> (Salary)
 
 @enduml
